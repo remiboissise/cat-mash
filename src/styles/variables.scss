@@ -1,0 +1,31 @@
+/* Containers */
+$x-small: 720px;
+$small: 800px;
+$medium: 1200px;
+$large: 1300px;
+
+/* Breakpoints */
+$width: 800px;
+
+/* Colors */
+$black: rgb(39, 39, 39);
+$white: rgb(255, 255, 255);
+$pink: rgb(243, 195, 211);
+$blue: rgb(139, 211, 251);
+$yellow: rgb(252, 242, 136);
+$green: rgb(101, 220, 169);
+$mustard: rgb(229, 218, 105);
+$red: rgb(236, 73, 64);
+
+/* Export */
+:export { 
+    blue: $blue;
+    black: $black;
+    white: $white;
+    pink: $pink;
+    yellow: $yellow;
+    green: $green;
+    mustard: $mustard;
+    red: $red;
+}
+
