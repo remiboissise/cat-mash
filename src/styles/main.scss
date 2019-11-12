@@ -5,7 +5,9 @@
 @import './reset';
 
 /* Components */ 
-@import './menu.scss'
-
+@import './menu.scss';
+@import './button.scss';
+@import './vote-cat.scss';
 
 /* Pages */
+@import './home.scss';

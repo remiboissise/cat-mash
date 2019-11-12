@@ -1,0 +1,17 @@
+.vote-container {
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex: 50%;
+    background: $black;
+    height: calc(100vh - 60px);
+
+    img {
+        border-radius: 25px;
+        border: 10px solid $pink;
+        max-width: 75%;
+    }
+    
+}
