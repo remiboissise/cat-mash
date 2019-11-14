@@ -9,7 +9,7 @@ export default class CardCat extends Component {
             <>
                 <div className="image-container">
                     <div className="background-blur" style={{ backgroundImage : `url(${source})` }}></div>
-                    <img src={source} />
+                    <img src={source} alt="" />
                 </div>
             </>
         )
