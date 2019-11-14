@@ -18,13 +18,14 @@ export default class Stats extends React.Component {
     }
 
     async loadCats() {
-        const snapshotCats = await cats().get();
+        const snapshotCats = await cats()
+            .orderBy('score', 'desc')
+            .get();
         return snapshotCats.docs.map(cat => cat.data());
     }
 
     render() {
         let { cats, number } = this.state;
-
         if(number === null) {
             return(
                 <div className="stats-container">
@@ -36,8 +37,8 @@ export default class Stats extends React.Component {
         if(number !== 0) {
             return (
                 <div className="stats-container">
-                    {cats.map((cat) => {
-                        return <StatsCat cat={cat} key={cat.id} />
+                    {cats.map((cat, index) => {
+                        return <StatsCat cat={cat} key={cat.id} number={index+1} />
                     })}
                 </div>
             )

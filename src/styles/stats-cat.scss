@@ -1,12 +1,31 @@
 .stat-container {
 
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    flex: 25%;
+    flex: 1 0 25%;
     background: inherit;
     height: calc(100vh - 60px);
+
+    @media (max-width: 767px) {
+        flex: 50%;
+    }
+
+    .classement {
+        display: block;
+        height: 60px;
+        width: 60px;
+        line-height: 60px;
+        -moz-border-radius: 50%;
+        border-radius: 50%;
+        background-color: transparent;
+        border: 2px solid $black;
+        color: $black;
+        text-align: center;
+        font-size: 2em;
+        margin-bottom: 10%;
+    }
 
     .image-container {
         height: 65%;

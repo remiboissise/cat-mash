@@ -32,32 +32,72 @@ export default class Home extends React.Component {
      */
     handleVote = async (chosenCat, catNotChosen) => {
         // On va récupérer le nombre de votes
-        await this.voteCounterIncrement();
+        var counter = await this.voteCounterIncrement();
+        console.log('counter', counter.data().count);
         // On va récupérer les informations du chat sélectionné
-        var chosenCatFb = await this.catRecovery(chosenCat);
+        var chosenCatFbDocument = await this.catRecovery(chosenCat);
+        var chosenCatData = chosenCatFbDocument.data();
         // On va récupérer les informations du chat qui n'a pas été séléctionné
-        var catNotChosenFb = await this.catRecovery(catNotChosen);
+        var catNotChosenFbDocument = await this.catRecovery(catNotChosen);
+        var catNotChosenFbData = catNotChosenFbDocument.data();
         // On va modifier les informations du chat séléctionné (on va incrémenter le nombre de fois où il est apparu et son nombre de vote)
-        cats().doc(chosenCatFb.id).update({ display : chosenCatFb.data().display + 1, vote : chosenCatFb.data().vote + 1 });
+        await cats().doc(chosenCatFbDocument.id).update({ 
+            display: chosenCatData.display + 1, 
+            vote: chosenCatData.vote + 1,
+            ratio: this.catCalculateRatio(chosenCatData.display + 1, chosenCatData.vote + 1)
+        });
         // On va modifier les informations du chat qui n'a pas été séléctionné (on va incrémenter le nombre de fois où il est apparu)
-        cats().doc(catNotChosenFb.id).update({ display : catNotChosenFb.data().display + 1 });
+        await cats().doc(catNotChosenFbDocument.id).update({ 
+            display: catNotChosenFbData.display + 1,
+            ratio: this.catCalculateRatio(catNotChosenFbData.display + 1, catNotChosenFbData.vote)
+        });
         // On va afficher deux nouveaux chats
         let firstCat = this.randomCat(Cats);
         let secondCat = this.randomCat(Cats, firstCat);
         this.setState({
             firstCat: firstCat,
             secondCat: secondCat
-        })
+        });
+        // On va mettre à jour les scores
+        this.catsUpdateScore(counter.data().count + 1)
+    }
+
+    catCalculateRatio = (totalCatDisplay, totalCatVote) => {
+        if(totalCatVote === 0) {
+            return 0
+        } else {
+            return totalCatDisplay / totalCatVote;
+        }
+    }
+
+    catsUpdateScore = async (totalNumberVotes) => {
+        const snapshotCats = await cats().get();
+        snapshotCats.docs.map((cat) => {
+            cats().doc(cat.id).update({ 
+                score : this.catUpdateScore(totalNumberVotes, cat.data().display, cat.data().ratio) 
+            });
+        });
+    } 
+
+    /**
+     * Calcul le score d'un chat en fonction de son nombre d'apparition, de son nombre de like
+     * et du nombre total de vote
+     */
+    catUpdateScore = (totalNumberVotes, totalCatDisplay, catRatio) => {
+        var calcul = Math.round(((totalCatDisplay / totalNumberVotes) * catRatio) * 100)
+        return calcul;
     }
 
     voteCounterIncrement = async () => {
         var counter = await votes().get();
         if(!counter.empty) {
-            votes().doc(counter.docs[0].id).update({ count : counter.docs[0].data().count + 1 })
+            votes().doc(counter.docs[0].id).update({ count : counter.docs[0].data().count + 1 });
+            return counter.docs[0];
         } else {
-            votes().add({
+            let voteAdd = await votes().add({
                 count: 1
             });
+            return voteAdd.get();
         }
     }
 
@@ -75,7 +115,8 @@ export default class Home extends React.Component {
             id: cat.id,
             url: cat.url,
             display: 0,
-            vote: 0
+            vote: 0,
+            ratio: 0
         });
         return await catAdd.get();
     }
