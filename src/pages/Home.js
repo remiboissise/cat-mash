@@ -1,14 +1,12 @@
 import React from 'react'
 import VoteCat from '../components/Vote-Cat';
-import { Firebase } from '../api/Firebase';
+import { cats } from '../api/Firebase';
 import * as Cats from '../data/cats';
 
 export default class Home extends React.Component {
 
     constructor(props) {
         super(props);
-        // Initialisation de notre base de données
-        this.fb = new Firebase();
         // Récupération de notre premier chat
         let firstCat = this.randomCat(Cats, null);
         // Récupération de notre second chat (différent du premier)
@@ -38,9 +36,9 @@ export default class Home extends React.Component {
         // On va récupérer les informations du chat qui n'a pas été séléctionné
         var catNotChosenFb = await this.catRecovery(catNotChosen);
         // On va modifier les informations du chat séléctionné (on va incrémenter le nombre de fois où il est apparu et son nombre de vote)
-        this.fb.cats().doc(chosenCatFb.id).update({ display : chosenCatFb.data().display + 1, vote : chosenCatFb.data().vote + 1 });
+        cats().doc(chosenCatFb.id).update({ display : chosenCatFb.data().display + 1, vote : chosenCatFb.data().vote + 1 });
         // On va modifier les informations du chat qui n'a pas été séléctionné (on va incrémenter le nombre de fois où il est apparu)
-        this.fb.cats().doc(catNotChosenFb.id).update({ display : catNotChosenFb.data().display + 1 });
+        cats().doc(catNotChosenFb.id).update({ display : catNotChosenFb.data().display + 1 });
         // On va afficher deux nouveaux chats
         let firstCat = this.randomCat(Cats);
         let secondCat = this.randomCat(Cats, firstCat);
@@ -51,7 +49,7 @@ export default class Home extends React.Component {
     }
 
     catRecovery = async (cat) => {
-        var catExist = await this.fb.cats().where('id', '==', cat.id).get();
+        var catExist = await cats().where('id', '==', cat.id).get();
         if(catExist.size !== 0) {
             return catExist.docs[0];
         } else {
@@ -60,7 +58,7 @@ export default class Home extends React.Component {
     }
 
     catRegistration = async (cat) => {
-        var catAdd = await this.fb.cats().add({
+        var catAdd = await cats().add({
             id: cat.id,
             url: cat.url,
             display: 0,

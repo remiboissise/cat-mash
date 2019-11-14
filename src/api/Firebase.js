@@ -2,22 +2,13 @@ import firebase from 'firebase/app';
 import 'firebase/firestore';
 import configuration from '../config/configuration';
 
-export class Firebase {
+// Init Firebase
+firebase.initializeApp({
+    apiKey: configuration.apiKeyFirebase,
+    authDomain: configuration.authDomainFirebase,
+    databaseURL: configuration.databaseURLFirebase,
+    projectId: configuration.projectIdFirebase
+});
 
-    constructor() {
-        // Init Firebase configuration
-        let fbConfig = {
-            apiKey: configuration.apiKeyFirebase,
-            authDomain: configuration.authDomainFirebase,
-            databaseURL: configuration.databaseURLFirebase,
-            // storageBucket: configuration.storageBucketFirebase,
-            // messagingSenderId: configuration.messagingSenderIdFirebase,
-            projectId: configuration.projectIdFirebase
-        };
-        // Init Firebase
-        firebase.initializeApp(fbConfig);
-        this.db = firebase.firestore();
-    }
-
-    cats = () => this.db.collection('cats');
-}
+export const db = firebase.firestore();
+export function cats() { return db.collection('cats') }
