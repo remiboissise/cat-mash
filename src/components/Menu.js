@@ -9,7 +9,7 @@ export default class Menu extends Component {
                     <Link to="/">Catmash</Link>
                 </div>
                 <div className="navbar-buttons">
-                    <Link to="/stats">Statistiques</Link>
+                    <Link to="/stats">Classement</Link>
                 </div>
             </div>
         );

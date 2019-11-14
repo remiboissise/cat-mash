@@ -12,3 +12,4 @@ firebase.initializeApp({
 
 export const db = firebase.firestore();
 export function cats() { return db.collection('cats') }
+export function votes() { return db.collection('votes') }

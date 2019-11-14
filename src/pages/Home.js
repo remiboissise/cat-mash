@@ -1,6 +1,6 @@
 import React from 'react'
 import VoteCat from '../components/Vote-Cat';
-import { cats } from '../api/Firebase';
+import { cats, votes } from '../api/Firebase';
 import * as Cats from '../data/cats';
 
 export default class Home extends React.Component {
@@ -31,6 +31,8 @@ export default class Home extends React.Component {
      * @param {*} cat cat 
      */
     handleVote = async (chosenCat, catNotChosen) => {
+        // On va récupérer le nombre de votes
+        await this.voteCounterIncrement();
         // On va récupérer les informations du chat sélectionné
         var chosenCatFb = await this.catRecovery(chosenCat);
         // On va récupérer les informations du chat qui n'a pas été séléctionné
@@ -46,6 +48,17 @@ export default class Home extends React.Component {
             firstCat: firstCat,
             secondCat: secondCat
         })
+    }
+
+    voteCounterIncrement = async () => {
+        var counter = await votes().get();
+        if(!counter.empty) {
+            votes().doc(counter.docs[0].id).update({ count : counter.docs[0].data().count + 1 })
+        } else {
+            votes().add({
+                count: 1
+            });
+        }
     }
 
     catRecovery = async (cat) => {
