@@ -5,12 +5,12 @@
     justify-content: center;
     align-items: center;
     flex: 50%;
-    background: $black;
+    background: inherit;
     height: calc(100vh - 60px);
 
     .image-container {
-        height: 75%;
-        width: 75%;
+        height: 65%;
+        width: 65%;
         position: relative;
         
         .background-blur {

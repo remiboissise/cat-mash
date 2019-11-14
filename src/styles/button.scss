@@ -1,7 +1,23 @@
-.vote {
-    font-size: 1rem;
-    margin: 10px 0;
-    padding: 15px;
-    border-radius: $border-radius;
-    cursor: pointer;
+button {
+    font-family : inherit;
+
+    &.vote {
+        font-size: 2rem;
+        margin: 15px 0;
+        padding: 10px;
+        cursor: pointer;
+        background:none;
+        border: solid 10px $black; 
+        clip-path: polygon( 
+            calc(0% + 5px) calc(0% + 5px), /* top left */
+            calc(100% - 5px) calc(0% + 5px), /* top right */
+            calc(100% - 5px) calc(100% - 5px), /* bottom right */
+            calc(0% + 5px) calc(100% - 5px) /* bottom left */
+        );
+        transition: clip-path 0.3s linear;
+
+        &:hover {
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+        }
+    }
 }
