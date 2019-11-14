@@ -10,9 +10,9 @@ export default class Home extends React.Component {
         // Initialisation de notre base de données
         this.fb = new Firebase();
         // Récupération de notre premier chat
-        var firstCat = this.randomCat(Cats, null);
+        let firstCat = this.randomCat(Cats, null);
         // Récupération de notre second chat (différent du premier)
-        var secondCat = this.randomCat(Cats, firstCat);
+        let secondCat = this.randomCat(Cats, firstCat);
         this.state = {
             firstCat: firstCat,
             secondCat: secondCat
@@ -42,9 +42,11 @@ export default class Home extends React.Component {
         // On va modifier les informations du chat qui n'a pas été séléctionné (on va incrémenter le nombre de fois où il est apparu)
         this.fb.cats().doc(catNotChosenFb.id).update({ display : catNotChosenFb.data().display + 1 });
         // On va afficher deux nouveaux chats
+        let firstCat = this.randomCat(Cats);
+        let secondCat = this.randomCat(Cats, firstCat);
         this.setState({
-            firstCat: this.randomCat(Cats),
-            secondCat: this.randomCat(Cats)
+            firstCat: firstCat,
+            secondCat: secondCat
         })
     }
 
@@ -71,13 +73,13 @@ export default class Home extends React.Component {
         return (
             <div className="home-container">
                 <VoteCat imageSrc = {this.state.firstCat.url} 
-                    buttonText="Coucou"
+                    buttonText="So cute"
                     primaryColor="black" 
                     secondColor="red"
                     onClick={() => this.handleVote(this.state.firstCat, this.state.secondCat)}
                 />
                 <VoteCat imageSrc = {this.state.secondCat.url} 
-                    buttonText="Coucou"
+                    buttonText="So pretty"
                     primaryColor="black" 
                     secondColor="red"
                     onClick={() => this.handleVote(this.state.secondCat, this.state.firstCat)}
