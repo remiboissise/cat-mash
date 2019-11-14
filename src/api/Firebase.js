@@ -10,12 +10,14 @@ export class Firebase {
             apiKey: configuration.apiKeyFirebase,
             authDomain: configuration.authDomainFirebase,
             databaseURL: configuration.databaseURLFirebase,
-            storageBucket: configuration.storageBucketFirebase,
-            messagingSenderId: configuration.messagingSenderIdFirebase,
+            // storageBucket: configuration.storageBucketFirebase,
+            // messagingSenderId: configuration.messagingSenderIdFirebase,
             projectId: configuration.projectIdFirebase
         };
         // Init Firebase
         firebase.initializeApp(fbConfig);
         this.db = firebase.firestore();
     }
+
+    cats = () => this.db.collection('cats');
 }

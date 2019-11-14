@@ -1,7 +1,11 @@
 .home-container {
-        
+    
+    height: calc(100vh - 60px);
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
-    
+
+    @media (max-width: 767px) {
+        flex-direction: column;
+    }
 }

@@ -12,11 +12,9 @@ import Menu from './components/Menu';
 
 const routing = (
     <Router>
-        <div>
-            <Menu />
-            <Route exact path="/" component={Home} />
-            <Route path="/stats" component={Stats} />
-        </div>
+        <Menu />
+        <Route exact path="/" component={Home} />
+        <Route path="/stats" component={Stats} />
     </Router>
   )
 

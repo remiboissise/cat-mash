@@ -4,11 +4,11 @@ import CardCat from './Card-Cat';
 
 export default class VoteCat extends Component {
     render() {
-        const { imageSrc, buttonText, primaryColor, secondColor } = this.props;
+        const { imageSrc, buttonText, onClick } = this.props;
         return (
-            <div className="vote-container" style={{ backgroundColor: primaryColor }}>
-                <CardCat source={imageSrc} borderColor={secondColor} />
-                <Button text={buttonText} primaryColor={primaryColor} secondColor={secondColor}></Button>
+            <div className="vote-container">
+                <CardCat source={imageSrc} />
+                <Button text={buttonText} onClick={onClick}></Button>
             </div>
         )
     }

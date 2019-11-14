@@ -1,7 +1,7 @@
 const configuration = {
-    apiKeyFirebase: 'YOUR_API_KEY_FIREBASE',
-    authDomainFirebase: 'YOUR_AUTH_DOMAIN_FIREBASE',
-    databaseURLFirebase: 'YOUR_DATABASE_URL_FIREBASE',
-    projectIdFirebase: 'YOUR_PROJECT_ID_FIREBASE'
+    apiKeyFirebase: 'AIzaSyCLFB4Y4BJL3LcdHZqW5IqxDyklsdDX8ig',
+    authDomainFirebase: 'cat-mash-rb13.firebaseapp.com',
+    databaseURLFirebase: 'https://cat-mash-rb13.firebaseio.com',
+    projectIdFirebase: 'cat-mash-rb13'
 }
 module.exports = configuration;
