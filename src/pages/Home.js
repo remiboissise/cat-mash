@@ -31,9 +31,8 @@ export default class Home extends React.Component {
      * @param {*} cat cat 
      */
     handleVote = async (chosenCat, catNotChosen) => {
-        // On va récupérer le nombre de votes
-        var counter = await this.voteCounterIncrement();
-        console.log('counter', counter.data().count);
+        // On va incrémenter le nombre de vote
+        await this.voteCounterIncrement();
         // On va récupérer les informations du chat sélectionné
         var chosenCatFbDocument = await this.catRecovery(chosenCat);
         var chosenCatData = chosenCatFbDocument.data();
@@ -58,46 +57,20 @@ export default class Home extends React.Component {
             firstCat: firstCat,
             secondCat: secondCat
         });
-        // On va mettre à jour les scores
-        this.catsUpdateScore(counter.data().count + 1)
     }
 
     catCalculateRatio = (totalCatDisplay, totalCatVote) => {
-        if(totalCatVote === 0) {
-            return 0
-        } else {
-            return totalCatDisplay / totalCatVote;
-        }
-    }
-
-    catsUpdateScore = async (totalNumberVotes) => {
-        const snapshotCats = await cats().get();
-        snapshotCats.docs.map((cat) => {
-            cats().doc(cat.id).update({ 
-                score : this.catUpdateScore(totalNumberVotes, cat.data().display, cat.data().ratio) 
-            });
-        });
-    } 
-
-    /**
-     * Calcul le score d'un chat en fonction de son nombre d'apparition, de son nombre de like
-     * et du nombre total de vote
-     */
-    catUpdateScore = (totalNumberVotes, totalCatDisplay, catRatio) => {
-        var calcul = Math.round(((totalCatDisplay / totalNumberVotes) * catRatio) * 100)
-        return calcul;
+        return (totalCatVote === 0) ? 0 : totalCatDisplay / totalCatVote;
     }
 
     voteCounterIncrement = async () => {
         var counter = await votes().get();
         if(!counter.empty) {
             votes().doc(counter.docs[0].id).update({ count : counter.docs[0].data().count + 1 });
-            return counter.docs[0];
         } else {
-            let voteAdd = await votes().add({
+            await votes().add({
                 count: 1
             });
-            return voteAdd.get();
         }
     }
 
