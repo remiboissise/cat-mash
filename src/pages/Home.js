@@ -66,7 +66,7 @@ export default class Home extends React.Component {
      * @param {*} totalCatVote nombre total de vote pour le chat
      */
     catCalculateRatio = (totalCatDisplay, totalCatVote) => {
-        return (totalCatVote === 0) ? 0 : totalCatDisplay / totalCatVote;
+        return (totalCatVote === 0) ? 0 : totalCatVote / totalCatDisplay;
     }
 
     /**

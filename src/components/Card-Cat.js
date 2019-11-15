@@ -1,5 +1,3 @@
-
-
 import React, { Component } from 'react';
 
 export default class CardCat extends Component {
