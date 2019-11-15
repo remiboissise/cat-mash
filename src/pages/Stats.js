@@ -8,7 +8,9 @@ export default class Stats extends React.Component {
         super(props);
         this.state = {
             cats: null,
-            number: null
+            number: null,
+            quotaExceededFb: false,
+            errorMessage: null
         }
     }
 
@@ -27,26 +29,31 @@ export default class Stats extends React.Component {
      * Lancée au chargement de notre composant
      */
     async componentDidMount() {
-        var counter = await votes().get();
-        // Si notre compteur de vote n'est pas encore instancié
-        if(counter.empty) {
-            return this.setState({ cats : null, number : 0 });
+        try {
+            var counter = await votes();
+            // Si notre compteur de vote n'est pas encore instancié
+            if(counter.empty) {
+                return this.setState({ cats : null, number : 0 });
+            }
+            // Si notre compteur de vote est instancié mais qu'il n'y a pas de vote
+            if(counter.docs[0].data().count === 0) {
+                return this.setState({ cats : null, number : 0 });
+            }
+            // On va vérifier si un vote a été posté (listener)
+            votes().onSnapshot(async (docs) => {
+                // On va récupérer l'ensemble de nos chats
+                var allCats = await this.loadCats();
+                // On va mettre à jour le score des chats et les trier par score
+                var allCatsWithScore = allCats.map((cat) => {
+                    return { ...cat, score : this.catUpdateScore(docs.docs[0].data().count, cat.display, cat.ratio) }
+                }).sort((cat1, cat2) => { return cat2.score - cat1.score });
+                // On va mettre à jour l'état
+                this.setState({ cats : allCatsWithScore, number : allCatsWithScore.length }) 
+            });
+        } catch (error) {
+            console.log('je passe la', error);
+            return this.setState({ quotaExceededFb : true, errorMessage: error.message });
         }
-        // Si notre compteur de vote est instancié mais qu'il n'y a pas de vote
-        if(counter.docs[0].data().count === 0) {
-            return this.setState({ cats : null, number : 0 });
-        }
-        // On va vérifier si un vote a été posté (listener)
-        votes().onSnapshot(async (docs) => {
-            // On va récupérer l'ensemble de nos chats
-            var allCats = await this.loadCats();
-            // On va mettre à jour le score des chats et les trier par score
-            var allCatsWithScore = allCats.map((cat) => {
-                return { ...cat, score : this.catUpdateScore(docs.docs[0].data().count, cat.display, cat.ratio) }
-            }).sort((cat1, cat2) => { return cat2.score - cat1.score });
-            // On va mettre à jour l'état
-            this.setState({ cats : allCatsWithScore, number : allCatsWithScore.length }) 
-        });
     }
 
     /**
@@ -58,7 +65,16 @@ export default class Stats extends React.Component {
     }
 
     render() {
-        let { cats, number } = this.state;
+        let { cats, number, errorMessage, quotaExceededFb } = this.state;
+        
+        if(quotaExceededFb) {
+            return(
+                <div className="stats-container">
+                    <p className="information">{errorMessage}</p>
+                </div>
+            )
+        }
+
         if(number === null) {
             return(
                 <div className="stats-container">
