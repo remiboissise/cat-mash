@@ -2,13 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Route, BrowserRouter as Router } from 'react-router-dom'
 
+import Menu from './components/Menu';
 import Home from './pages/Home';
 import Stats from './pages/Stats';
 
 import './styles/main.scss';
 
 import * as serviceWorker from './serviceWorker';
-import Menu from './components/Menu';
 
 const routing = (
     <Router>

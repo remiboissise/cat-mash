@@ -18,8 +18,9 @@ export default class Home extends React.Component {
     }
 
     /**
-     *  Récupère un chat aléatoirement
+     * Récupère un chat aléatoirement
      * @param {*} cats array of cats 
+     * @param {*} except null ou chat
      */
     randomCat = (cats, except) => {
         let cat = cats[Math.floor(Math.random() * cats.length)];
@@ -59,10 +60,18 @@ export default class Home extends React.Component {
         });
     }
 
+    /**
+     * Permet de calculer le ratio de Match du chat
+     * @param {*} totalCatDisplay nombre de fois que le chat a été affiché
+     * @param {*} totalCatVote nombre total de vote pour le chat
+     */
     catCalculateRatio = (totalCatDisplay, totalCatVote) => {
         return (totalCatVote === 0) ? 0 : totalCatDisplay / totalCatVote;
     }
 
+    /**
+     * Permet d'incrémenter le nombre de vote total
+     */
     voteCounterIncrement = async () => {
         var counter = await votes().get();
         if(!counter.empty) {
@@ -74,6 +83,10 @@ export default class Home extends React.Component {
         }
     }
 
+    /**
+     * Permet de vérifier dans la base de données si le chat existe, si non on va le créer
+     * @param {*} cat
+     */
     catRecovery = async (cat) => {
         var catExist = await cats().where('id', '==', cat.id).get();
         if(catExist.size !== 0) {
@@ -83,6 +96,10 @@ export default class Home extends React.Component {
         }
     }
 
+    /**
+     * Création dans la base de données d'un nouveau chat
+     * @param {*} cat
+     */
     catRegistration = async (cat) => {
         var catAdd = await cats().add({
             id: cat.id,
