@@ -77,7 +77,7 @@ export default class Home extends React.Component {
      * Permet d'incrémenter le nombre de vote total
      */
     voteCounterIncrement = async () => {
-        var counter = await votes();
+        var counter = await votes().get();
         if(!counter.empty) {
             votes().doc(counter.docs[0].id).update({ count : counter.docs[0].data().count + 1 });
         } else {

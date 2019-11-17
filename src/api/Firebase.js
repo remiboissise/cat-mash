@@ -11,16 +11,17 @@ firebase.initializeApp({
 });
 
 export const db = firebase.firestore();
-// export function cats() { return db.collection('cats') }
 export function cats() {
-    try {
-        return db.collection('cats')
-    }catch(e) {
-        console.log('lallalalzdaldz');
-    } 
+    try { 
+        return db.collection('cats');
+    } catch (error) {
+        throw new Error('Vous ne pouvez plus voter aujourd\'hui !');
+    }
 }
 export function votes() {
-    return db.collection('votes').get().catch((error) => {
+    try { 
+        return db.collection('votes');
+    } catch (error) {
         throw new Error('Vous ne pouvez plus voter aujourd\'hui !');
-    })
+    }
 }

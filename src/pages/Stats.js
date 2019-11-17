@@ -30,7 +30,7 @@ export default class Stats extends React.Component {
      */
     async componentDidMount() {
         try {
-            var counter = await votes();
+            var counter = await votes().get();;
             // Si notre compteur de vote n'est pas encore instancié
             if(counter.empty) {
                 return this.setState({ cats : null, number : 0 });
@@ -51,7 +51,6 @@ export default class Stats extends React.Component {
                 this.setState({ cats : allCatsWithScore, number : allCatsWithScore.length }) 
             });
         } catch (error) {
-            console.log('je passe la', error);
             return this.setState({ quotaExceededFb : true, errorMessage: error.message });
         }
     }
